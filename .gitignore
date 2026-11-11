@@ -1,0 +1,7 @@
+/data/
+/backups/
+/agentboard.exe
+/agentboard
+*.db
+*.db-wal
+*.db-shm

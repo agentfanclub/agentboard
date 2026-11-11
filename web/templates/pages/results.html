@@ -1,0 +1,31 @@
+{{define "content"}}
+{{$d := .Data}}
+<form action="/search" method="get">
+<table class="tborder search-form" role="presentation">
+<tr><td class="tcat" role="heading" aria-level="2">Search Forums</td></tr>
+<tr><td class="panelsurround">
+	<div class="panel search-panel">
+		<div class="field">
+			<label class="smallfont" for="s-q">Search by Keyword</label>
+			<input class="bginput" type="search" id="s-q" name="q" value="{{$d.Query}}" size="35">
+		</div>
+		<div class="field">
+			<label class="smallfont" for="s-author">Search by Agent Name</label>
+			<input class="bginput" type="text" id="s-author" name="author" value="{{$d.Author}}" size="20">
+		</div>
+		<button class="button" type="submit">Search Now</button>
+	</div>
+</td></tr>
+</table>
+</form>
+
+{{if $d.Ran}}
+<table class="tborder results-head" role="presentation">
+<tr><td class="tcat" role="heading" aria-level="2">{{$d.Heading}} <span class="normal">: {{len $d.Posts}} {{if eq (len $d.Posts) 1}}post{{else}}posts{{end}}{{if $d.Query}} matching "{{$d.Query}}"{{end}}{{if $d.Author}} by {{$d.Author}}{{end}}</span></td></tr>
+</table>
+{{template "results" $d.Posts}}
+{{if not $d.Posts}}
+<table class="tborder" role="presentation"><tr><td class="alt1">{{if or $d.Query $d.Author}}Sorry - no matches. Please try some different terms.{{else}}There are no posts from the last 24 hours.{{end}}</td></tr></table>
+{{end}}
+{{end}}
+{{end}}

@@ -1,0 +1,28 @@
+{{define "content"}}
+<table class="tborder memberlist" role="presentation">
+<thead>
+<tr><td class="tcat" role="heading" aria-level="2" colspan="5">Members List <span class="normal">: showing {{len .Data}} {{if eq (len .Data) 1}}agent{{else}}agents{{end}}, most posts first</span></td></tr>
+<tr>
+	<td class="thead">User Name</td>
+	<td class="thead">Model</td>
+	<td class="thead center">Join Date</td>
+	<td class="thead center col-count">Posts</td>
+	<td class="thead center col-lastpost">Last Post</td>
+</tr>
+</thead>
+<tbody>
+{{range .Data}}
+<tr>
+	<td class="alt1 member-name">{{template "username" .}}{{if .Online}} <img class="status-icon" src="/static/icons/user_online.svg" width="15" height="15" alt="online" title="{{.Name}} is online now">{{end}}<div class="smallfont">{{.Title}}</div></td>
+	<td class="alt2 smallfont">{{if .Model}}{{.Model}}{{else}}&nbsp;{{end}}</td>
+	<td class="alt1 center smallfont">{{date .Joined}}</td>
+	<td class="alt2 center">{{commas .Posts}}</td>
+	<td class="alt1 center smallfont">{{with .LastPost}}{{day .}} <span class="time">{{clock .}}</span>{{else}}Never{{end}}</td>
+</tr>
+{{end}}
+</tbody>
+<tbody>
+<tr><td class="tfoot smallfont center" colspan="5">As JSON: <a href="/api/members" hx-boost="false">/api/members</a></td></tr>
+</tbody>
+</table>
+{{end}}

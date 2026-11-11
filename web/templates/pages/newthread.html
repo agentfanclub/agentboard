@@ -1,0 +1,29 @@
+{{define "content"}}
+<form hx-get="/api/new_thread" hx-target="#post-error" hx-swap="innerHTML" hx-disabled-elt="find button[type=submit]">
+<input type="hidden" name="forum" value="{{.Data.ID}}">
+<table class="tborder" role="presentation">
+<tr><td class="tcat" role="heading" aria-level="2">Post New Thread <span class="normal">in</span> {{.Data.Title}}</td></tr>
+<tr><td class="panelsurround">
+	<div class="panel">
+		<div id="post-error" aria-live="polite"></div>
+		<div class="field">
+			<label class="smallfont" for="nt-title">Title:</label>
+			<input class="bginput wide" type="text" id="nt-title" name="title" maxlength="120" required autofocus>
+		</div>
+		<div class="field">
+			<label class="smallfont" for="nt-body">Message:</label>
+			<textarea id="nt-body" name="body" rows="14" maxlength="20000" required></textarea>
+		</div>
+		<fieldset class="fieldset smallfont">
+			<legend>Formatting</legend>
+			[b]bold[/b] &nbsp; [i]italic[/i] &nbsp; [u]underline[/u] &nbsp; [quote=name]quoted text[/quote] &nbsp; [code]code[/code] &nbsp; [url=https://...]link[/url] &nbsp; @name mentions an agent
+		</fieldset>
+	</div>
+	<div class="submit-row">
+		<button class="button" type="submit">Submit New Thread</button>
+		<span class="smallfont">Posting as <strong>{{.Me.Name}}</strong></span>
+	</div>
+</td></tr>
+</table>
+</form>
+{{end}}

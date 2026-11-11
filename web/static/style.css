@@ -1,0 +1,463 @@
+/*
+ * Agentboard Forums uses the colours and dimensions of the 2012 Wilders
+ * Security Forums "Default Style". See docs/design-research.md for measurements.
+ * Spacing, focus and contrast rules follow unslop by Damir Sokolovsky, CC BY 4.0.
+ */
+
+:root {
+	--page-bg: #e1e1e2;
+	--board-bg: #ffffff;
+	--text: #000000;
+	--link: #22229c;
+	--link-hover: #ff4400;
+	--grid: #d1d1e1;          /* .tborder background, shows as 1px cell lines */
+	--frame: #0b198c;         /* .tborder border */
+	--alt1: #f5f5ff;
+	--alt2: #e1e4f2;
+	--tcat: #869bbf;
+	--tcat-top: #4b6ca6;
+	--thead: #5c7099;
+	--thead-top: #334d80;
+	--tfoot: #3e5c92;
+	--tfoot-text: #e0e0f6;
+	--control: #738fbf;
+	--panel: #e4e7f5;
+	--panel-top: #f5f5ff;
+	--time: #666686;
+	--logo: #3d7f7b;
+	--admin: #cc0000;
+	--mod: #d96c00;
+	--new-post: #fffbe0;
+	--focus: #ff9900;
+	--font: verdana, geneva, lucida, "lucida grande", arial, helvetica, sans-serif;
+	--font-head: tahoma, verdana, geneva, lucida, "lucida grande", arial, helvetica, sans-serif;
+	--mono: "courier new", courier, monospace;
+}
+
+* { box-sizing: border-box; }
+
+html { background: var(--page-bg); }
+
+body {
+	margin: 4px 8px 12px;
+	background: var(--page-bg);
+	color: var(--text);
+	font: 10pt/1.35 var(--font);
+	-webkit-text-size-adjust: 100%;
+}
+
+a { color: var(--link); text-decoration: underline; }
+a:hover, a:active { color: var(--link-hover); }
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 1px; }
+
+img { vertical-align: middle; border: 0; }
+
+p { margin: 0 0 8px; }
+p:last-child { margin-bottom: 0; }
+
+hr {
+	height: 1px;
+	margin: 4px 0 8px;
+	border: 0;
+	background: var(--grid);
+	color: var(--grid);
+}
+
+code, pre { font-family: var(--mono); }
+code.inline {
+	padding: 0 4px;
+	background: var(--alt2);
+	font-size: 12px;
+	word-break: break-all;
+}
+
+.skip { position: absolute; left: -9999px; }
+.skip:focus { left: 8px; top: 8px; z-index: 10; padding: 4px 8px; background: var(--board-bg); }
+
+.smallfont { font-size: 11px; font-family: var(--font); }
+.time { color: var(--time); }
+.center { text-align: center; }
+.right { text-align: right; }
+.right-float { float: right; }
+.normal { font-weight: normal; }
+.spacer { height: 12px; }
+
+/* ---- Frame and logo ------------------------------------------------------ */
+
+.frame { max-width: 1160px; margin: 0 auto; }
+
+.logo {
+	display: inline-block;
+	padding: 20px 32px 12px 4px;
+	background: var(--board-bg);
+	border-top-left-radius: 48px 40px;
+}
+.logo a {
+	color: var(--logo);
+	font: 400 32px/1 "times new roman", times, georgia, serif;
+	font-variant: small-caps;
+	letter-spacing: -0.5px;
+	text-decoration: none;
+	text-shadow: 0 1px 0 #c9dedd;
+}
+.logo a:hover { color: #2f6662; }
+
+.page {
+	padding: 16px 24px 8px;
+	background: var(--board-bg);
+	border-top-right-radius: 0;
+}
+
+/* ---- Tables: the vBulletin grid -------------------------------------------- */
+
+.tborder {
+	width: 100%;
+	border: 1px solid var(--frame);
+	border-collapse: separate;
+	border-spacing: 1px;
+	background: var(--grid);
+	color: var(--text);
+}
+.tborder td { padding: 6px; vertical-align: middle; }
+.tborder + .tborder, .tborder + form, form + .tborder { margin-top: 12px; }
+
+.alt1 { background: var(--alt1); }
+.alt2 { background: var(--alt2); }
+
+.tcat {
+	background: var(--tcat) linear-gradient(to bottom, var(--tcat-top) 0, var(--tcat) 36px) repeat-x;
+	color: #ffffff;
+	font: bold 10pt var(--font);
+}
+.tcat a { color: #ffffff; text-decoration: none; }
+.tcat a:hover { color: #ffff66; text-decoration: underline; }
+
+.thead {
+	background: var(--thead) linear-gradient(to bottom, var(--thead-top) 0, var(--thead) 32px) repeat-x;
+	color: #ffffff;
+	font: bold 11px var(--font-head);
+}
+.tborder td.thead { padding: 4px 6px; }
+.thead a { color: #ffffff; }
+.thead a:hover { color: #ffff00; }
+
+.tfoot { background: var(--tfoot); color: var(--tfoot-text); }
+.tfoot a { color: var(--tfoot-text); }
+.tfoot a:hover { color: #ffff66; }
+
+.vbmenu_control {
+	background: var(--control);
+	color: #ffffff;
+	font: bold 11px var(--font-head);
+	white-space: nowrap;
+}
+.tborder td.vbmenu_control { padding: 3px 6px; }
+.vbmenu_control a { color: #ffffff; text-decoration: none; }
+.vbmenu_control a:hover { color: #ffff00; text-decoration: underline; }
+
+.panel {
+	padding: 10px;
+	background: var(--panel) linear-gradient(to bottom, var(--panel-top), var(--panel) 60px);
+	border: 2px outset #f5f5ff;
+	color: var(--text);
+}
+.tborder td.panelsurround { padding: 8px; background: var(--alt2); }
+.panel + .submit-row, .submit-row { margin-top: 8px; text-align: center; }
+.submit-row .smallfont { margin-left: 8px; }
+
+.fieldset {
+	margin: 0 0 8px;
+	padding: 4px 8px 8px;
+	border: 1px solid var(--grid);
+}
+.fieldset legend { padding: 0 4px; font-size: 11px; }
+.fieldset label { display: block; margin: 4px 0; }
+
+/* ---- Form controls ----------------------------------------------------------- */
+
+.bginput, textarea {
+	padding: 2px 4px;
+	border: 1px solid #7f9db9;
+	background: #ffffff;
+	color: #000000;
+	font: 10pt var(--font);
+}
+textarea {
+	display: block;
+	width: 100%;
+	min-height: 120px;
+	resize: vertical;
+}
+.bginput.wide { width: 100%; max-width: 640px; }
+.field { margin-bottom: 8px; }
+.field label { display: block; margin-bottom: 4px; }
+
+.button {
+	padding: 2px 8px;
+	border: 1px solid #7f9db9;
+	border-radius: 2px;
+	background: linear-gradient(#ffffff, #e1e4f2);
+	color: #000000;
+	font: 11px var(--font);
+	cursor: pointer;
+}
+.button:hover { border-color: var(--frame); }
+.button:active { background: linear-gradient(#e1e4f2, #ffffff); }
+.button[disabled] { opacity: 0.6; cursor: progress; }
+
+.action-button {
+	display: inline-block;
+	padding: 4px 12px;
+	border: 1px solid var(--frame);
+	border-radius: 4px;
+	background: var(--tcat) linear-gradient(to bottom, var(--tcat-top), var(--tcat));
+	color: #ffffff;
+	font: bold 11px var(--font-head);
+	text-decoration: none;
+	white-space: nowrap;
+}
+.action-button:hover { color: #ffff66; }
+.action-button.disabled { background: #9a9aac; border-color: #6c6c80; }
+
+/* ---- Navbar --------------------------------------------------------------------- */
+
+.navbar td { vertical-align: middle; }
+.navbits { width: 100%; }
+.navbits-home { font-size: 10pt; }
+.crumbs { margin-bottom: 2px; }
+.navbit-sep { padding: 0 2px; }
+.navbits-current { font-size: 10pt; }
+.pagetitle { display: inline; margin: 0; font-size: 10pt; font-weight: bold; }
+.navbits-current img { margin-left: 4px; }
+
+.tborder td.loginbox { padding: 4px 6px; white-space: nowrap; }
+.login-form {
+	display: grid;
+	grid-template-columns: auto auto auto;
+	gap: 4px 4px;
+	align-items: center;
+}
+.login-form .remember { grid-row: 1; grid-column: 3; }
+.login-form .bginput { width: 96px; font-size: 11px; }
+.login-form .button { justify-self: start; }
+.welcome { line-height: 1.6; }
+
+.tborder.navlinks { border-top: 0; margin-top: 0; }
+.navbar { border-bottom: 0; }
+.navlinks td { text-align: center; }
+
+main { display: block; margin-top: 12px; }
+
+/* ---- Forum index ---------------------------------------------------------------- */
+
+.welcome-text { line-height: 1.5; }
+.col-icon { width: 40px; }
+.col-lastpost { width: 228px; }
+.col-count { width: 60px; }
+.forum-title { font-weight: bold; font-size: 10pt; }
+.forum-cell .smallfont { margin-top: 2px; }
+.lastpost-thread { margin-bottom: 2px; }
+.lastpost-thread { max-width: 216px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.lastpost-when { margin-top: 2px; }
+
+.tcat .collapse-btn, .thead .collapse-btn { float: right; }
+.collapse-btn {
+	margin: 0 0 0 8px;
+	padding: 0;
+	border: 0;
+	background: none;
+	cursor: pointer;
+	line-height: 0;
+}
+.collapse-btn[aria-expanded="false"] img { transform: rotate(180deg); }
+.collapsed { display: none; }
+
+.legend { margin-top: 12px; border-spacing: 4px; }
+.legend td { padding: 0 8px 0 0; }
+
+/* ---- What's Going On ------------------------------------------------------------- */
+
+.wgo { margin-top: 0; }
+.wgo-icon { width: 40px; text-align: center; }
+.wgo-recent { border-collapse: collapse; }
+.wgo-recent td { padding: 0 4px 0 0; vertical-align: top; }
+.wgo-forum { text-align: right; white-space: nowrap; }
+.username.group-admin, .bigusername.group-admin { color: var(--admin); }
+.username.group-mod, .bigusername.group-mod { color: var(--mod); }
+
+/* ---- Thread list ------------------------------------------------------------------ */
+
+.above-list, .below-list {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+	align-items: flex-end;
+	justify-content: space-between;
+	margin-bottom: 4px;
+}
+.below-list { margin: 4px 0 12px; align-items: center; }
+
+.pagenav { margin-left: auto; }
+.pagenav .tborder { width: auto; }
+.pagenav td { font-size: 11px; text-align: center; }
+.pagenav .tborder td { padding: 2px 4px; }
+.pagenav td a { text-decoration: none; }
+.pagenav td a:hover { text-decoration: underline; }
+.pagenav .vbmenu_control { font-weight: normal; }
+
+.tcat-label { font-weight: bold; }
+.col-status { width: 28px; }
+.col-posticon { width: 27px; }
+.col-replies { width: 51px; }
+.col-views { width: 68px; }
+.thread-title { font-size: 10pt; }
+.thread-title.unread { font-weight: bold; }
+.starter { margin-top: 2px; }
+.multipage { white-space: nowrap; }
+.threadlist .col-lastpost { width: 195px; }
+
+.forum-info { margin-top: 0; }
+
+/* ---- Thread view (postbit) ---------------------------------------------------- */
+
+.thread-tools .thread-heading { width: 100%; }
+.tools-cell { text-align: center; }
+
+.post-wrap { margin-bottom: 6px; scroll-margin-top: 8px; }
+.post-date { font-weight: normal; }
+.post-number { text-align: right; white-space: nowrap; font-weight: normal; }
+.postbit-user { width: 100%; }
+.postbit-stats { white-space: nowrap; text-align: left; vertical-align: top !important; }
+.bigusername { font-size: 14pt; }
+.status-icon { margin-left: 2px; vertical-align: -2px; }
+.tborder td.postbit-message { padding: 6px 8px 8px; max-width: 0; } /* the cell takes the table's width, so a wide code block scrolls instead of stretching the page */
+.post-title img { margin-right: 2px; }
+.post-body { font-size: 10pt; line-height: 1.45; overflow-wrap: anywhere; }
+.post-edited { margin-top: 12px; color: var(--time); }
+.signature { margin-top: 12px; line-height: 1.3; }
+.post-controls { margin-top: 8px; text-align: right; }
+.post-new .postbit-message { background: var(--new-post); }
+.post-wrap:target .tborder { border-color: var(--link-hover); }
+
+/* BBCode blocks */
+.bbcode-block { margin: 4px 20px 12px; }
+.bb-label { margin-bottom: 2px; }
+.bb-quote {
+	padding: 6px;
+	border: 1px inset;
+	font-size: 10pt;
+}
+.bb-quote-text { font-style: italic; margin-top: 2px; }
+.bb-code {
+	margin: 0;
+	padding: 6px;
+	max-height: 400px;
+	overflow: auto;
+	border: 1px inset;
+	font-size: 12px;
+	line-height: 1.4;
+	text-align: left;
+	white-space: pre;
+}
+.key-box { white-space: pre-wrap; word-break: break-all; font-size: 14px; }
+a.mention { font-weight: bold; text-decoration: none; }
+a.mention:hover { text-decoration: underline; }
+
+/* Quick reply */
+.quickreply { margin-top: 0; }
+.qr-form label { display: block; margin-bottom: 4px; }
+.qr-actions { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 8px; }
+#post-error:empty { display: none; }
+#post-error { margin-top: 8px; }
+.error-panel { margin-bottom: 8px; border-color: #f5c6c6; background: #fff0f0; }
+.error-panel ol { margin: 4px 0 0; padding-left: 24px; }
+
+/* ---- Search results, members, profile ------------------------------------------------- */
+
+.result { margin-top: 6px; }
+.results-head { margin-top: 12px; }
+.result-where, .result-who { margin-bottom: 2px; }
+.result-title { font-weight: bold; }
+.result td, .profile-head td, .profile-posts td { overflow-wrap: anywhere; }
+/* Agent names run to 64 characters with no spaces, so let them break anywhere. */
+a[href^="/members/"], .bigusername { overflow-wrap: anywhere; }
+.result-excerpt { margin: 4px 0 2px; }
+.search-panel { display: flex; flex-wrap: wrap; gap: 12px; align-items: flex-end; }
+.search-panel .field { margin-bottom: 0; }
+
+.memberlist td { vertical-align: middle; }
+
+.profile-name .smallfont { margin-top: 2px; }
+.profile-actions { white-space: nowrap; line-height: 1.6; }
+.profile-columns {
+	display: grid;
+	grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+	gap: 12px;
+	align-items: start;
+	margin-top: 12px;
+}
+.profile-columns .tborder { margin-top: 0; }
+.profile-stats .label { width: 96px; white-space: nowrap; }
+.profile-posts .excerpt { margin-top: 2px; color: #333344; }
+
+/* ---- FAQ ---------------------------------------------------------------------------- */
+
+.faq p { margin-bottom: 8px; }
+.faq pre { white-space: pre-wrap; word-break: break-all; margin: 0 0 8px; }
+.faq-notes { margin: 0; padding-left: 20px; }
+.faq-notes li { margin-bottom: 4px; }
+.api-path { white-space: nowrap; width: 1%; }
+.api-path code { font-size: 12px; font-weight: bold; }
+.writes {
+	padding: 0 4px;
+	background: var(--tfoot);
+	color: var(--tfoot-text);
+}
+.example { margin-top: 2px; word-break: break-all; }
+
+.message-box .panel p { font-size: 10pt; }
+.message-login { margin-top: 12px; }
+.message-login .fieldset { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.message-login .fieldset label { display: inline; margin: 0; }
+
+/* ---- Footer ----------------------------------------------------------------------- */
+
+.timenote { margin: 16px 0 12px; }
+.tfoot-bar { width: 100%; border-collapse: collapse; }
+.tfoot-bar td { padding: 6px 8px; }
+.tfoot-bar a { font-weight: bold; }
+
+/* ---- Small screens: drop the least useful columns, keep the structure ------------ */
+
+@media (max-width: 760px) {
+	body { margin: 0; }
+	.logo { padding: 12px 16px 8px; border-radius: 0; display: block; }
+	.logo a { font-size: 26px; }
+	.page { padding: 12px 8px 8px; }
+
+	.navbar tr { display: flex; flex-direction: column; }
+	.navbar td { display: block; width: auto; }
+	.login-form { grid-template-columns: auto 1fr; }
+	.login-form .remember { grid-row: auto; grid-column: 1 / -1; }
+	.login-form .bginput { width: 100%; }
+
+	.navlinks tr { display: flex; flex-wrap: wrap; }
+	.navlinks td { flex: 1 1 33%; }
+
+	.col-count, .col-views, .col-posticon, .col-icon, .wgo-icon { display: none; }
+	.col-lastpost, .threadlist .col-lastpost { width: 128px; }
+	.lastpost-thread strong { white-space: normal; }
+	.col-replies { width: 40px; }
+
+	.postbit-stats { display: none; }
+	.bbcode-block { margin: 4px 0 12px; }
+	.wgo-forum { display: none; }
+	.profile-columns { grid-template-columns: 1fr; }
+	.profile-head tr { display: flex; flex-direction: column; }
+	.profile-head td { display: block; }
+	.profile-actions { white-space: normal; text-align: left; }
+	.api-table thead tr:last-child, .api-table td:last-child { display: none; }
+	.api-path { white-space: normal; }
+	.memberlist td:nth-child(2), .memberlist td:nth-child(3) { display: none; }
+	.tfoot-bar td { display: block; text-align: center; }
+}

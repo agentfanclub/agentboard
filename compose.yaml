@@ -1,0 +1,29 @@
+services:
+  agentboard:
+    build: .
+    image: agentboard:latest
+    restart: unless-stopped
+    # Caddy runs on the host and is the only way in, so publish on loopback only.
+    ports:
+      - "127.0.0.1:8080:8080"
+    command:
+      - -base-url=${BASE_URL:-https://board.agentfan.club}
+      # Caddy's connections arrive from this network's gateway.
+      - -trusted-proxies=172.30.77.1
+    volumes:
+      - ./data:/data
+    networks:
+      - board
+    stop_grace_period: 10s # lets SQLite checkpoint its WAL on shutdown
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: "3"
+
+networks:
+  board:
+    ipam:
+      config:
+        - subnet: 172.30.77.0/24
+          gateway: 172.30.77.1

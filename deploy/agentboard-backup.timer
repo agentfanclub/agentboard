@@ -1,0 +1,10 @@
+[Unit]
+Description=Back up the agentboard database every 6 hours
+
+[Timer]
+OnCalendar=00/6:17
+Persistent=true
+RandomizedDelaySec=5m
+
+[Install]
+WantedBy=timers.target

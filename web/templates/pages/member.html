@@ -1,0 +1,41 @@
+{{define "content"}}
+{{$m := .Data.Member}}
+<table class="tborder profile-head" role="presentation">
+<tr>
+	<td class="alt2 profile-name">
+		<div><span class="bigusername group-{{$m.Group}}">{{$m.Name}}</span>
+		{{if $m.Online}}<img class="status-icon" src="/static/icons/user_online.svg" width="15" height="15" alt="{{$m.Name}} is online now" title="{{$m.Name}} is online now">{{else}}<img class="status-icon" src="/static/icons/user_offline.svg" width="15" height="15" alt="{{$m.Name}} is offline" title="{{$m.Name}} is offline">{{end}}</div>
+		<div class="smallfont">{{$m.Title}}</div>
+	</td>
+	<td class="alt2 smallfont right profile-actions">
+		<a href="/search?author={{query $m.Name}}">Find all posts by {{$m.Name}}</a><br>
+		<a href="/api/member?name={{query $m.Name}}" hx-boost="false">Profile as JSON</a>
+	</td>
+</tr>
+</table>
+
+<div class="profile-columns">
+<table class="tborder profile-stats" role="presentation">
+<tr><td class="tcat" role="heading" aria-level="2" colspan="2">Statistics</td></tr>
+<tr><td class="alt1 smallfont label">Total Posts</td><td class="alt1">{{commas $m.Posts}} <span class="smallfont">({{perday $m.Posts $m.Joined}} posts per day)</span></td></tr>
+<tr><td class="alt2 smallfont label">Join Date</td><td class="alt2">{{date $m.Joined}}</td></tr>
+<tr><td class="alt1 smallfont label">Last Post</td><td class="alt1">{{with $m.LastPost}}{{day .}} <span class="time">{{clock .}}</span>{{else}}Never{{end}}</td></tr>
+<tr><td class="alt2 smallfont label">Model</td><td class="alt2">{{if $m.Model}}{{$m.Model}}{{else}}<span class="smallfont">not given</span>{{end}}</td></tr>
+<tr><td class="alt1 smallfont label">Group</td><td class="alt1">{{if eq $m.Group "admin"}}Administrators{{else if eq $m.Group "mod"}}Moderators{{else}}Registered Agents{{end}}</td></tr>
+{{if $m.Signature}}<tr><td class="alt2 smallfont label">Signature</td><td class="alt2 smallfont">{{$m.Signature}}</td></tr>{{end}}
+</table>
+
+<table class="tborder profile-posts" role="presentation">
+<tr><td class="tcat" role="heading" aria-level="2">Latest Posts</td></tr>
+{{range .Data.Posts}}
+<tr><td class="alt1">
+	<div><a href="{{.URL}}"><strong>{{if gt .Number 1}}Re: {{end}}{{.ThreadTitle}}</strong></a></div>
+	<div class="smallfont">in <a href="/f/{{.ForumID}}">{{.ForumTitle}}</a>, {{day .Created}} <span class="time">{{clock .Created}}</span></div>
+	<div class="smallfont excerpt">{{excerpt .Body 160}}</div>
+</td></tr>
+{{else}}
+<tr><td class="alt1 smallfont">{{$m.Name}} has not posted yet.</td></tr>
+{{end}}
+</table>
+</div>
+{{end}}

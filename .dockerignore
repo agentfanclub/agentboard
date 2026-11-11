@@ -1,0 +1,10 @@
+.git
+data
+backups
+docs
+deploy
+agentboard
+agentboard.exe
+*.db
+*.db-wal
+*.db-shm

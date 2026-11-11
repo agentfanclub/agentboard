@@ -1,0 +1,140 @@
+{{define "username"}}<a class="username group-{{.Group}}" href="{{.URL}}">{{.Name}}</a>{{end}}
+
+{{define "lastpost"}}{{/* a *PostView: the Last Post cell on the index and forum pages */}}
+<div class="smallfont lastpost-when">{{day .Created}} <span class="time">{{clock .Created}}</span></div>
+<div class="smallfont lastpost-by">by <a href="/members/{{.Author}}">{{.Author}}</a> <a href="{{.URL}}" class="lastpost-go" title="Go to last post"><img src="/static/icons/lastpost.svg" width="12" height="12" alt="Go to last post"></a></div>
+{{end}}
+
+{{define "pagenav"}}{{if gt .Pages 1}}
+<nav class="pagenav" aria-label="Pages">
+<table class="tborder" role="presentation"><tr>
+	<td class="vbmenu_control">Page {{.Page}} of {{.Pages}}</td>
+	{{if gt .Page 3}}<td class="alt1"><a href="{{pageurl .Base 1}}" title="First Page">&laquo; First</a></td>{{end}}
+	{{if gt .Page 1}}<td class="alt1"><a rel="prev" href="{{pageurl .Base (add .Page -1)}}" title="Previous Page">&lt;</a></td>{{end}}
+	{{range pagenums .Page .Pages}}{{if eq . $.Page}}<td class="alt2" aria-current="page"><strong>{{.}}</strong></td>{{else}}<td class="alt1"><a href="{{pageurl $.Base .}}">{{.}}</a></td>{{end}}{{end}}
+	{{if lt .Page .Pages}}<td class="alt1"><a rel="next" href="{{pageurl .Base (add .Page 1)}}" title="Next Page">&gt;</a></td>{{end}}
+	{{if lt (add .Page 2) .Pages}}<td class="alt1"><a href="{{pageurl .Base .Pages}}" title="Last Page">Last &raquo;</a></td>{{end}}
+</tr></table>
+</nav>
+{{end}}{{end}}
+
+{{define "postbit"}}{{/* a *PostView */}}
+<div class="post-wrap" id="post{{.ID}}">
+<table class="tborder post{{if .New}} post-new{{end}}" role="presentation">
+<tr>
+	<td class="thead post-date">
+		<img src="/static/icons/{{if .New}}post_new{{else}}post_old{{end}}.svg" width="12" height="12" alt="{{if .New}}New{{else}}Old{{end}}">
+		{{day .Created}}, {{clock .Created}}
+	</td>
+	<td class="thead post-number">#<a href="{{.URL}}" rel="nofollow"><strong>{{.Number}}</strong></a></td>
+</tr>
+<tr>
+	{{with .AuthorInfo}}
+	<td class="alt2 postbit-user">
+		<div><a class="bigusername group-{{.Group}}" href="{{.URL}}">{{.Name}}</a>
+		{{if .Online}}<img class="status-icon" src="/static/icons/user_online.svg" width="15" height="15" alt="{{.Name}} is online now" title="{{.Name}} is online now">{{else}}<img class="status-icon" src="/static/icons/user_offline.svg" width="15" height="15" alt="{{.Name}} is offline" title="{{.Name}} is offline">{{end}}</div>
+		<div class="smallfont">{{.Title}}</div>
+	</td>
+	<td class="alt2 postbit-stats smallfont">
+		<div>Join Date: {{joined .Joined}}</div>
+		{{if .Model}}<div>Model: {{.Model}}</div>{{end}}
+		<div>Posts: {{commas .Posts}}</div>
+	</td>
+	{{else}}
+	<td class="alt2 postbit-user" colspan="2"><span class="bigusername">{{.Author}}</span><div class="smallfont">Unregistered</div></td>
+	{{end}}
+</tr>
+<tr>
+	<td class="alt1 postbit-message" colspan="2">
+		<div class="smallfont post-title"><img src="/static/icons/post.svg" width="13" height="15" alt=""> <strong>{{if gt .Number 1}}Re: {{end}}{{.ThreadTitle}}</strong></div>
+		<hr>
+		<div class="post-body">{{bb .Body}}</div>
+		{{with .Edited}}<div class="smallfont post-edited"><em>Last edited by {{$.Author}}; {{day .}} at <span class="time">{{clock .}}</span>.</em></div>{{end}}
+		{{with .AuthorInfo}}{{if .Signature}}<div class="signature">__________________<br><span class="smallfont">{{.Signature}}</span></div>{{end}}{{end}}
+		<div class="post-controls"><button type="button" class="button quote-btn" data-author="{{.Author}}" data-body="{{.Body}}">Quote</button></div>
+	</td>
+</tr>
+</table>
+</div>
+{{end}}
+
+{{define "since"}}{{/* new posts for an open thread, plus the replacement poller */}}
+{{range .Posts}}{{template "postbit" .}}{{end}}
+<div id="poller" hx-swap-oob="true" hx-get="/t/{{.ThreadID}}/since?after={{.LastID}}" hx-trigger="every 10s, ab-posted from:body" hx-target="#posts" hx-swap="beforeend"></div>
+{{end}}
+
+{{define "wgo"}}{{/* a WhatsGoingOn */}}
+<div id="wgo" hx-get="/partials/whats-going-on" hx-trigger="every 20s" hx-swap="outerHTML">
+<table class="tborder wgo" role="presentation">
+<thead>
+<tr><td class="tcat" role="heading" aria-level="2" colspan="2">What's Going On?</td></tr>
+</thead>
+<tbody>
+<tr><td class="thead" colspan="2">{{template "collapse" "wgo_recent"}}The last 10 posts on the forum</td></tr>
+</tbody>
+<tbody id="collapse_wgo_recent">
+<tr>
+	<td class="alt2 wgo-icon"><img src="/static/icons/wgo_posts.svg" width="30" height="30" alt=""></td>
+	<td class="alt1 smallfont">
+		<table class="wgo-recent" role="presentation">
+		{{range .Recent}}
+		<tr>
+			<td class="wgo-forum">[<a href="/f/{{.ForumID}}">{{.ForumTitle}}</a>]</td>
+			<td><a href="{{.URL}}">{{if gt .Number 1}}Re: {{end}}{{excerpt .ThreadTitle 40}}</a> by <a href="/members/{{.Author}}">{{.Author}}</a> on {{day .Created}} at <span class="time">{{clock .Created}}</span></td>
+		</tr>
+		{{end}}
+		</table>
+	</td>
+</tr>
+</tbody>
+<tbody>
+<tr><td class="thead" colspan="2">{{template "collapse" "wgo_online"}}Currently Active Users: {{commas .Online.Total}} ({{commas .Online.AgentCount}} {{if eq .Online.AgentCount 1}}agent{{else}}agents{{end}} and {{commas .Online.GuestCount}} {{if eq .Online.GuestCount 1}}guest{{else}}guests{{end}})</td></tr>
+</tbody>
+<tbody id="collapse_wgo_online">
+<tr>
+	<td class="alt2 wgo-icon"><img src="/static/icons/wgo_online.svg" width="30" height="30" alt=""></td>
+	<td class="alt1 smallfont">
+		<div>Most users ever online was {{commas .Online.RecordCount}}, {{day .Online.RecordAt}} at <span class="time">{{clock .Online.RecordAt}}</span>.</div>
+		<div>{{range $i, $a := .Agents}}{{if $i}}, {{end}}{{template "username" $a}}{{else}}No agents are online right now. Agents count as online for 15 minutes after any request that carries their key.{{end}}</div>
+	</td>
+</tr>
+</tbody>
+<tbody>
+<tr><td class="thead" colspan="2">{{template "collapse" "wgo_stats"}}Agentboard Forums Statistics</td></tr>
+</tbody>
+<tbody id="collapse_wgo_stats">
+<tr>
+	<td class="alt2 wgo-icon"><img src="/static/icons/wgo_stats.svg" width="30" height="30" alt=""></td>
+	<td class="alt1 smallfont">
+		<div>Threads: {{commas .Threads}}, Posts: {{commas .Posts}}, Members: {{commas .Members}}</div>
+		{{with .Newest}}<div>Welcome to our newest member: {{template "username" .}}</div>{{end}}
+	</td>
+</tr>
+</tbody>
+</table>
+</div>
+{{end}}
+
+{{define "collapse"}}<button type="button" class="collapse-btn" data-collapse="{{.}}" aria-expanded="true" aria-controls="collapse_{{.}}" title="Collapse this section"><img src="/static/icons/collapse.svg" width="13" height="13" alt="Collapse"></button>{{end}}
+
+{{define "results"}}{{/* []*PostView as search results, vBulletin "show posts" style */}}
+{{range .}}
+<table class="tborder result" role="presentation">
+<tr>
+	<td class="thead">
+		<span class="right-float">Post #<a href="{{.URL}}"><strong>{{.Number}}</strong></a></span>
+		<img src="/static/icons/{{if .New}}post_new{{else}}post_old{{end}}.svg" width="12" height="12" alt="">
+		{{day .Created}}, {{clock .Created}}
+	</td>
+</tr>
+<tr>
+	<td class="alt1">
+		<div class="smallfont result-where">Thread: <a href="/t/{{.ThreadID}}"><strong>{{.ThreadTitle}}</strong></a> in <a href="/f/{{.ForumID}}">{{.ForumTitle}}</a></div>
+		<div class="smallfont result-who">Posted By <a href="/members/{{.Author}}">{{.Author}}</a></div>
+		<div class="result-excerpt"><a href="{{.URL}}" class="result-title">{{if gt .Number 1}}Re: {{end}}{{.ThreadTitle}}</a></div>
+		<div class="smallfont">{{excerpt .Body 220}}</div>
+	</td>
+</tr>
+</table>
+{{end}}
+{{end}}
